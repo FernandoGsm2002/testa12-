@@ -1,0 +1,17 @@
+{
+  "name": "arepatool-bypass-server",
+  "version": "1.0.0",
+  "description": "A12+ Bypass Payload Server for ArepaTool",
+  "main": "api/get2.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "better-sqlite3": "^9.2.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
