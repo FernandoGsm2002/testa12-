@@ -8,10 +8,9 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "archiver": "^6.0.1",
-    "better-sqlite3": "^9.2.2"
+    "sql.js": "^1.10.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": "18.x"
   }
 }

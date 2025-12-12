@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+// Almacenamiento compartido en memoria
+const payloadStorage = new Map();
 
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,33 +12,21 @@ module.exports = async (req, res) => {
             return res.status(400).send('Missing type or id');
         }
 
-        const tmpDir = path.join('/tmp', 'bypass');
-        let filePath;
+        const key = `${type}_${id}`;
+        const data = payloadStorage.get(key);
 
-        switch (type) {
-            case 'step1':
-                filePath = path.join(tmpDir, 'firststp', id, 'fixedfile');
-                break;
-            case 'step2':
-                filePath = path.join(tmpDir, '2ndd', id, 'BLDatabaseManager.sqlite');
-                break;
-            case 'step3':
-                filePath = path.join(tmpDir, 'last', id, 'downloads.28.sqlitedb');
-                break;
-            default:
-                return res.status(400).send('Invalid type');
+        if (!data) {
+            return res.status(404).send('File not found or expired');
         }
 
-        if (!fs.existsSync(filePath)) {
-            return res.status(404).send('File not found');
-        }
-
-        const content = fs.readFileSync(filePath);
-        res.setHeader('Content-Length', content.length);
-        return res.send(content);
+        res.setHeader('Content-Length', data.length);
+        return res.send(data);
 
     } catch (error) {
         console.error('Download error:', error);
         return res.status(500).send(error.message);
     }
 };
+
+// Exportar storage para compartir
+module.exports.payloadStorage = payloadStorage;
